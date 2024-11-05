@@ -42,3 +42,10 @@ After select E2E testing, chrome, and click on feature fanduel.cy.js
 
 
 This will execute the test immediatly
+
+
+##### Execute tests in headless mode 
+
+`````
+npx  cypress run --browser chrome --headless
+`````
