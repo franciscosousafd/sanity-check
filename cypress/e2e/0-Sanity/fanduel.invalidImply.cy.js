@@ -23,7 +23,7 @@ context('Actions', () => {
 
 
       //Get access to the team name of the first team that appears on the screen
-      getFullTeamNameAccess(sportName);
+      cy.getFullTeamNameAccess(sportName);
       
       //Click on the team that we want to bet
       cy.get('@fullTeamName').then((text) => {
@@ -34,49 +34,33 @@ context('Actions', () => {
 
       //Click on the team that we want selected Puck and Money Line
       cy.get('@fullTeamName').then((text) => {
-        betOnFirstTeam(`Puck Line, ${text}`);
+        cy.betOnFirstTeam(`Puck Line, ${text}`);
       })
       cy.wait(timeoutValue);
 
       cy.get('@fullTeamName').then((text) => {
-        betOnFirstTeam(`Moneyline, ${text}`);
+        cy.betOnFirstTeam(`Moneyline, ${text}`);
       })
       cy.wait(timeoutValue);
    
       //Click again on Puck and Money Line of the team to unselect
       cy.get('@fullTeamName').then((text) => {
-        betOnFirstTeam(`Puck Line, ${text}`);
+        cy.betOnFirstTeam(`Puck Line, ${text}`);
       })
       cy.wait(timeoutValue);
 
       cy.get('@fullTeamName').then((text) => {
-        betOnFirstTeam(`Moneyline, ${text}`);
+        cy.betOnFirstTeam(`Moneyline, ${text}`);
       })
       cy.wait(timeoutValue);
 
 
       //Click again to bet again in the team
       cy.get('@fullTeamName').then((text) => {
-        betOnFirstTeam(text);
+        cy.betOnFirstTeam(text);
       })
       cy.get('div').find('input[type="text"]').first().type('0.10');
       cy.wait(timeoutValue);
       })
 
 })
-
-function betOnFirstTeam(teamName) {
-  cy.get(`div[role="button"][aria-label*="${teamName}"]`).first().click();
-}
-
-function getFullTeamNameAccess(sportName) {
-  cy.contains('h3[role="heading"]', sportName)   // Find the <h3> with the specified sport name
-    .closest('li')                               // Get the closest <li> ancestor
-    .next('li')                                  // Select the next sibling <li> element
-    .then((nextLi) => {
-      cy.wrap(nextLi).as('nextLi');              // Store it in an alias if you need it later
-      cy.get('@nextLi').get('span[role="text"]').first()  // Select the first <span> with role="text"
-        .invoke('text')                          // Get the text content of the element
-        .as('fullTeamName');                     // Store the text as an alias 'fullTeamName'
-    });
-}
